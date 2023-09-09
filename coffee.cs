@@ -54,7 +54,7 @@ class CoffeRoom<T> : PriorityQueue<T> {
             currentIndex = rightChild;
         }
         if (i != currentIndex) {
-            (double, T) data = heapArr[i];
+            (double, T) data = coffee[i];
             coffee[i] = coffee[currentIndex];
             coffee[currentIndex] = data;
             down_heap(currentIndex);
@@ -70,8 +70,8 @@ class CoffeRoom<T> : PriorityQueue<T> {
         if (coffee.Count == 0) {
             throw new InvalidOperationException("Coffee is empty");
         }
-        (double, T) maxItem = heapArr[0];
-        coffee[0] = coffee[heapArr.Count - 1];
+        (double, T) maxItem = coffee[0];
+        coffee[0] = coffee[coffee.Count - 1];
         coffee.RemoveAt(coffee.Count - 1);
         down_heap(0);
         return (maxItem.Item2, maxItem.Item1);
