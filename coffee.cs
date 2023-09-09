@@ -9,16 +9,16 @@ interface PriorityQueue<T> {
     (T, double) extractMax();
 }
 
-class BinaryHeap<T> : PriorityQueue<T> {
+class CoffeRoom<T> : PriorityQueue<T> {
 
-    private List<(double, T)> heapArr;
+    private List<(double, T)> coffee;
     
-    public BinaryHeap() {
-        heapArr = new List<(double, T)>();
+    public CoffeRoom() {
+        coffee = new List<(double, T)>();
     }
 
     public int count {
-        get { return heapArr.Count; }
+        get { return coffee.Count; }
     }
 
     private int left(int i) {
@@ -34,10 +34,10 @@ class BinaryHeap<T> : PriorityQueue<T> {
     }
 
     private void up_heap(int i) {
-        while (i > 0 && heapArr[i].Item1 > heapArr[parent(i)].Item1) {
-            (double, T) temp = heapArr[i];
-            heapArr[i] = heapArr[parent(i)];
-            heapArr[parent(i)] = temp;
+        while (i > 0 && coffee[i].Item1 > coffee[parent(i)].Item1) {
+            (double, T) temp = coffee[i];
+            coffee[i] = coffee[parent(i)];
+            coffee[parent(i)] = temp;
             i = parent(i);
         }
     }
@@ -46,33 +46,33 @@ class BinaryHeap<T> : PriorityQueue<T> {
 
         int currentIndex = i;
         int leftChild = left(i);
-        if (leftChild < heapArr.Count && heapArr[leftChild].Item1 > heapArr[currentIndex].Item1) {
+        if (leftChild < coffee.Count && coffee[leftChild].Item1 > coffee[currentIndex].Item1) {
             currentIndex = leftChild;
         }
         int rightChild = right(i);
-        if (rightChild < heapArr.Count && heapArr[rightChild].Item1 > heapArr[currentIndex].Item1) {
+        if (rightChild < coffee.Count && coffee[rightChild].Item1 > coffee[currentIndex].Item1) {
             currentIndex = rightChild;
         }
         if (i != currentIndex) {
             (double, T) data = heapArr[i];
-            heapArr[i] = heapArr[currentIndex];
-            heapArr[currentIndex] = data;
+            coffee[i] = coffee[currentIndex];
+            coffee[currentIndex] = data;
             down_heap(currentIndex);
         }
     }
 
     public void add(T elem, double priority) {
-        heapArr.Add((priority, elem));
-        up_heap(heapArr.Count - 1);
+        coffee.Add((priority, elem));
+        up_heap(coffee.Count - 1);
     }
 
     public (T, double) extractMax() {
-        if (heapArr.Count == 0) {
+        if (coffee.Count == 0) {
             throw new InvalidOperationException("Coffee is empty");
         }
         (double, T) maxItem = heapArr[0];
-        heapArr[0] = heapArr[heapArr.Count - 1];
-        heapArr.RemoveAt(heapArr.Count - 1);
+        coffee[0] = coffee[heapArr.Count - 1];
+        coffee.RemoveAt(coffee.Count - 1);
         down_heap(0);
         return (maxItem.Item2, maxItem.Item1);
     }
@@ -83,7 +83,7 @@ class Program {
 
         int roomCapacity = int.Parse(Console.ReadLine()!);
 
-        BinaryHeap<string> maxHeap = new BinaryHeap<string>();
+        CoffeRoom<string> coffee = new CoffeRoom<string>();
         List<(string, double)> data = new List<(string, double)>();
 
         string inputLine;
@@ -97,16 +97,16 @@ class Program {
 
         while (employeeCurrentOrder < limit) {
             (string name, double priority) info = data[employeeCurrentOrder];
-            maxHeap.add(info.name, info.priority);
+            coffee.add(info.name, info.priority);
             employeeCurrentOrder++;
         }
 
-        while (maxHeap.count > 0) {
-            var maxPriorityEmployee = maxHeap.extractMax();
+        while (coffee.count > 0) {
+            var maxPriorityEmployee = coffee.extractMax();
             Console.WriteLine($"{maxPriorityEmployee.Item1} {maxPriorityEmployee.Item2:f1}");
             if (employeeCurrentOrder < data.Count){
                 (string name, double priority) info = data[employeeCurrentOrder];
-                maxHeap.add(info.name, info.priority);
+                coffee.add(info.name, info.priority);
                 employeeCurrentOrder++;
             }
         }
